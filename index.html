@@ -1,1 +1,122 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#0f4c81">
+<title>اموال 5040</title>
 
+<style>
+body{
+    margin:0;
+    font-family:Tahoma,Arial,sans-serif;
+    background:#f2f5f8;
+    color:#18212b;
+}
+
+header{
+    background:#0f4c81;
+    color:white;
+    padding:14px;
+}
+
+.card{
+    background:white;
+    border-radius:14px;
+    padding:13px;
+    margin:10px;
+}
+
+#scanInput{
+    width:100%;
+    height:56px;
+    font-size:24px;
+    text-align:center;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>سامانه اموال 5040</h1>
+    <div>اسکن گروهی آفلاین اموال</div>
+</header>
+
+<input
+    id="scanInput"
+    inputmode="none"
+    autocomplete="off"
+    placeholder="QR را اسکن کنید"
+/>
+
+<div id="result"></div>
+
+<script>
+
+// دیتای اموال در نسخه کامل اینجا قرار گرفته است.
+
+function processScan(code){
+
+    code = code.trim();
+
+    if(!code)
+        return;
+
+    // جستجوی شماره اموال
+    const asset = index.get(code);
+
+    if(asset){
+
+        document.getElementById("result").innerHTML = `
+            <h2>مال پیدا شد</h2>
+
+            <p>
+                <b>شماره اموال:</b>
+                ${asset.barcode}
+            </p>
+
+            <p>
+                <b>مشخصات کالا:</b>
+                ${asset.item}
+            </p>
+
+            <p>
+                <b>محل استقرار:</b>
+                ${asset.location}
+            </p>
+
+            <p>
+                <b>استفاده‌کننده:</b>
+                ${asset.user}
+            </p>
+        `;
+
+    }else{
+
+        document.getElementById("result").innerHTML =
+            "<h2>در اطلاعات اموال پیدا نشد</h2>";
+    }
+
+    document.getElementById("scanInput").value = "";
+    document.getElementById("scanInput").focus();
+}
+
+
+document
+.getElementById("scanInput")
+.addEventListener("keydown",function(event){
+
+    if(event.key === "Enter"){
+
+        event.preventDefault();
+
+        processScan(this.value);
+    }
+
+});
+
+</script>
+
+</body>
+</html>
